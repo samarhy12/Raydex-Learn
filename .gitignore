@@ -1,0 +1,42 @@
+# Secrets / local config — never commit
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtualenvs
+venv/
+.venv/
+env/
+
+# Local data & runtime state
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Logs & OS junk
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor (local only)
+.vscode/
+.idea/

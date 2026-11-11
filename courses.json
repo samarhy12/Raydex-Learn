@@ -1,0 +1,70 @@
+[
+  {
+    "slug": "python",
+    "title": "Python to Machine Learning",
+    "seo_title": "Python Programming for Beginners to Machine Learning | Raydex Learn",
+    "seo_description": "Learn Python programming from the basics, then use pandas, charts and scikit-learn in practical projects. Free beginner-friendly lessons with code you can run in your browser.",
+    "image_alt": "Python code and machine learning course cover",
+    "file": "python.html",
+    "thumb": "img/python.svg",
+    "storage_key": "ztml-v1",
+    "progress": "python",
+    "hash_base": 1,
+    "progress_label": "items done",
+    "lessons": 42,
+    "units": 99,
+    "level": "Beginner to intermediate",
+    "accent": "green",
+    "summary": "Learn Python from variables and loops through data projects, charts and machine learning. Focus on writing code and understanding program logic, with practical projects from the start.",
+    "topics": ["Python", "NumPy", "pandas", "matplotlib", "scikit-learn"],
+    "objectives": [
+      "Write and debug Python programs with variables, loops and functions",
+      "Analyse real datasets with NumPy and pandas",
+      "Build charts and visualisations with matplotlib",
+      "Train and evaluate machine learning models with scikit-learn",
+      "Package what you learn into a small working web app"
+    ],
+    "skills": ["Python programming", "Data analysis", "Data visualisation", "Machine learning basics", "pandas", "scikit-learn"],
+    "prerequisites": "None. The course starts from variables and loops and builds up step by step.",
+    "parts": [
+      {"name": "Python foundations", "lessons": 12},
+      {"name": "Data analysis", "lessons": 12},
+      {"name": "Machine learning", "lessons": 13},
+      {"name": "Going further", "lessons": 5}
+    ]
+  },
+  {
+    "slug": "webdev",
+    "title": "Web Development",
+    "seo_title": "Web Development for Beginners: HTML, CSS & JavaScript | Raydex Learn",
+    "seo_description": "Learn web development from scratch with free, hands-on HTML, CSS and JavaScript lessons. Build responsive pages, interactive features and portfolio-ready projects in your browser.",
+    "image_alt": "HTML, CSS and JavaScript web development course cover",
+    "file": "webdev.html",
+    "thumb": "img/webdev.svg",
+    "storage_key": "raydexjs4",
+    "progress": "done_map",
+    "hash_base": 0,
+    "progress_label": "lessons done",
+    "lessons": 70,
+    "level": "Complete beginner",
+    "accent": "amber",
+    "summary": "Build real pages with HTML, CSS and JavaScript. Practise in the live editor, then finish with three capstone websites.",
+    "topics": ["HTML", "CSS", "JavaScript", "Flexbox and Grid", "fetch and async"],
+    "objectives": [
+      "Build structured web pages with HTML",
+      "Style layouts with CSS, Flexbox and Grid",
+      "Add interactivity with JavaScript",
+      "Fetch and display data with async JavaScript",
+      "Complete three capstone websites"
+    ],
+    "skills": ["HTML", "CSS", "JavaScript", "Responsive layout", "Flexbox", "CSS Grid", "fetch API"],
+    "prerequisites": "None. Designed for complete beginners — no prior coding experience needed.",
+    "parts": [
+      {"name": "Getting started", "lessons": 10},
+      {"name": "HTML", "lessons": 15},
+      {"name": "CSS", "lessons": 17},
+      {"name": "JavaScript", "lessons": 25},
+      {"name": "Capstones", "lessons": 3}
+    ]
+  }
+]

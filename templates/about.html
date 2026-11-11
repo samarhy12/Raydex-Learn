@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}About Raydex Learn and Its Creator, Raphael | Raydex Hub{% endblock %}
+{% block description %}Meet Agyarey Raphael Yeboah Wadie, the Accra-based software developer who created Raydex Learn as part of the Raydex Hub ecosystem. Learn why he builds practical, hands-on coding courses.{% endblock %}
+
+{% block social_image %}
+<meta property="og:image" content="{{ site_url }}{{ url_for('static', filename='img/ralph.jpg') }}">
+<meta property="og:image:alt" content="Agyarey Raphael Yeboah Wadie, software developer and creator of Raydex Learn">
+<meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename='img/ralph.jpg') }}">
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Raydex Learn",
+  "url": site_url + "/about",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Agyarey Raphael Yeboah Wadie",
+    "alternateName": "Raphael",
+    "jobTitle": "Software Developer",
+    "address": {"@type": "PostalAddress", "addressLocality": "Accra", "addressCountry": "GH"},
+    "image": site_url + url_for('static', filename='img/ralph.jpg'),
+    "url": "https://raydexhub.com/",
+    "worksFor": {"@type": "Organization", "name": "Raydex Hub", "url": "https://raydexhub.com/"}
+  }
+}|tojson }}</script>
+{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">About</p>
+      <h1>About Raydex Learn</h1>
+    </div>
+    <div class="prose">
+      <p>Raydex Learn is an online learning platform for practical coding skills. It is the education arm of the <a href="https://raydexhub.com" rel="noopener">Raydex Hub</a> ecosystem — an independent product with its own courses, accounts and progress tracking.</p>
+
+      <h2>What we believe</h2>
+      <p>Learning to code works best when you write code, not just read about it. Every lesson on Raydex Learn is built around code you can run immediately — in the page, with no installs and no setup. Lessons are short on purpose: enough to learn something real, short enough to finish in one sitting.</p>
+
+      <h2>What the platform offers</h2>
+      <ul>
+        <li>Structured courses that build on each other, from first variables to applied machine learning and web development.</li>
+        <li>Code that runs in the browser — real Python and JavaScript, executed as you learn.</li>
+        <li>Progress that syncs to your account, so you can switch between phone and laptop without losing your spot.</li>
+        <li>A dashboard that shows what you have actually done — no invented streaks or engagement tricks.</li>
+      </ul>
+
+      <h2>What we don't do</h2>
+      <p>We don't pad courses with filler lessons, fake reviews, or claims we can't back up. If a course is free to try, it says so. If progress is saved, it really is saved.</p>
+
+      <h2 id="creator">Meet the creator</h2>
+      <div class="creator-card">
+        <img src="{{ url_for('static', filename='img/ralph.jpg') }}"
+             alt="Agyarey Raphael Yeboah Wadie, software developer and creator of Raydex Learn"
+             width="1280" height="1280" loading="lazy">
+        <div>
+          <p class="eyebrow">The builder behind Raydex Learn</p>
+          <h3>Agyarey Raphael Yeboah Wadie</h3>
+          <p>Raphael is a software developer based in Accra, Ghana, and the creator behind Raydex Hub, a growing ecosystem of free web tools, independent platforms, and tailored software.</p>
+          <p>He builds practical digital products to solve real problems, from AI-powered utilities to education technology. Raydex Learn reflects his belief that programming is best learned by writing code, running it, and seeing what it does.</p>
+          <p><a href="https://raydexhub.com" rel="noopener">Explore Raphael’s work at Raydex Hub</a></p>
+        </div>
+      </div>
+
+      <h2>Get in touch</h2>
+      <p>Questions, feedback or course ideas? Reach us through the <a href="{{ url_for('contact') }}">contact page</a>.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

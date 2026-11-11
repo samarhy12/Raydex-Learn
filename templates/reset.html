@@ -1,0 +1,16 @@
+{% extends "auth_base.html" %}
+{% block title %}Choose a new password | Raydex Learn{% endblock %}
+{% block auth_form %}
+<h1>Choose a new password</h1>
+<p class="sub">Pick something you have not used before.</p>
+<form method="post" class="form">
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  <label for="password">New password</label>
+  <div class="pw"><input id="password" type="password" name="password" autocomplete="new-password" minlength="8" required>
+    <button type="button" class="pw-toggle" data-target="password" aria-label="Show password">Show</button></div>
+  <label for="password2">Repeat new password</label>
+  <input id="password2" type="password" name="password2" autocomplete="new-password" minlength="8" required>
+  <button class="btn block" type="submit">Update password</button>
+</form>
+<p class="auth-alt"><a href="{{ url_for('auth.forgot') }}">Request a new link</a></p>
+{% endblock %}

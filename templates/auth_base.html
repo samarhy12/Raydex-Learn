@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="auth">
+  <aside class="auth-aside" aria-label="About Raydex Learn">
+    <a class="brand" href="{{ url_for('index') }}">
+      <svg class="logo" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#315C50"/><path d="M9 11l6 5-6 5" fill="none" stroke="#D9A441" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 22h7" stroke="#F6F5F1" stroke-width="3" stroke-linecap="round"/></svg>
+      <span>Raydex Learn</span>
+    </a>
+    <h2>Your progress goes where you go.</h2>
+    <ul>
+      <li>Start a lesson on your phone and finish it on a laptop.</li>
+      <li>Keep your XP and completed lessons in one place.</li>
+      <li>Switch between courses without losing your spot.</li>
+    </ul>
+  </aside>
+  <div class="auth-form">
+    <div class="auth-box">
+      {% block auth_form %}{% endblock %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='auth.js') }}" defer></script>{% endblock %}

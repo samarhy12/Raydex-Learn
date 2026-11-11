@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}{{ c.seo_title }}{% endblock %}
+{% block description %}{{ c.seo_description }}{% endblock %}
+
+{% block social_image %}
+<meta property="og:image" content="{{ site_url }}{{ url_for('static', filename=c.thumb) }}">
+<meta property="og:image:alt" content="{{ c.image_alt }}">
+<meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename=c.thumb) }}">
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": c.title,
+  "description": c.seo_description,
+  "url": site_url + url_for('course_detail', slug=c.slug),
+  "image": site_url + url_for('static', filename=c.thumb),
+  "educationalLevel": c.level,
+  "isAccessibleForFree": true,
+  "teaches": c.skills,
+  "provider": {
+    "@type": "Organization",
+    "name": "Raydex Learn",
+    "url": site_url,
+    "parentOrganization": {"@type": "Organization", "name": "Raydex Hub", "url": "https://raydexhub.com/"}
+  }
+}|tojson }}</script>
+{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('catalogue') }}">Courses</a> / {{ c.title }}
+    </nav>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:48px;align-items:start" class="detail-grid">
+      <div>
+        <img class="course-thumb" src="{{ url_for('static', filename=c.thumb) }}" alt="{{ c.title }} course cover" style="border-radius:14px;border:1px solid var(--line);margin-bottom:28px">
+        <h1 style="font-size:clamp(30px,4vw,42px);margin-bottom:12px">{{ c.title }}</h1>
+        <p class="cc-level" style="margin-bottom:16px">{{ c.level }}</p>
+        <p style="color:var(--mute);font-size:17px;max-width:38em">{{ c.summary }}</p>
+
+        <div class="facts" style="margin-top:28px">
+          <div class="fact"><b>{{ c.lessons }}</b><span>lessons</span></div>
+          <div class="fact"><b>Self-paced</b><span>study on your schedule</span></div>
+          <div class="fact"><b>Free</b><span>no payment required</span></div>
+          <div class="fact"><b>{{ c.progress_label }}</b><span>tracked</span></div>
+        </div>
+
+        {% if c.objectives %}
+        <h2 style="font-size:22px;margin:36px 0 14px">What you'll learn</h2>
+        <ul class="check-list">
+          {% for o in c.objectives %}<li>{{ o }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if c.skills %}
+        <h2 style="font-size:22px;margin:36px 0 14px">Skills you'll gain</h2>
+        <ul class="tags">{% for t in c.skills %}<li>{{ t }}</li>{% endfor %}</ul>
+        {% endif %}
+
+        {% if c.prerequisites %}
+        <h2 style="font-size:22px;margin:36px 0 14px">Prerequisites</h2>
+        <p style="color:var(--mute);max-width:38em">{{ c.prerequisites }}</p>
+        {% endif %}
+
+        <h2 style="font-size:22px;margin:36px 0 14px">Curriculum</h2>
+        {% set ns = namespace(i=0) %}
+        {% for part in c.parts %}
+        {% set start = ns.i %}{% set ns.i = ns.i + part.lessons %}
+        <details class="module" {% if loop.first %}open{% endif %}>
+          <summary>
+            <span class="m-name">{{ loop.index }}. {{ part.name }}</span>
+            <span class="m-count">{{ part.lessons }} lessons{% if part_done is not none %} &middot; {{ part_done[loop.index0] }} done{% endif %}</span>
+          </summary>
+          <div class="m-body">
+            {% if c.lessons_list %}
+              {% for title in c.lessons_list[start:ns.i] %}
+              <a class="m-lesson" href="{{ url_for('course', slug=c.slug) }}#l{{ start + loop.index0 + c.hash_base }}">
+                <span class="m-num">{{ '%02d'|format(start + loop.index0 + 1) }}</span>{{ title }}
+              </a>
+              {% endfor %}
+            {% else %}
+              <p>{{ part.lessons }} lessons in this module.</p>
+            {% endif %}
+          </div>
+        </details>
+        {% endfor %}
+      </div>
+
+      <aside>
+        <div class="panel" style="position:sticky;top:88px">
+          {% if prog %}
+            <p class="cc-level">In progress</p>
+            <h2 style="font-size:20px">{{ prog.done }} of {{ c.units }} {{ c.progress_label }}</h2>
+            <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ c.units }}" aria-valuenow="{{ prog.done }}" aria-label="{{ c.title }} progress" style="margin:12px 0"><i style="width:{{ prog.pct }}%"></i></div>
+            {% if prog.xp %}<p class="muted" style="font-size:14px;margin:0 0 16px">{{ prog.xp }} XP earned</p>{% endif %}
+          {% else %}
+            <p class="cc-level">Free to start</p>
+            <h2 style="font-size:20px">{{ c.title }}</h2>
+            <p class="muted" style="font-size:14px;margin:10px 0 16px">{{ c.lessons }} lessons{% if c.units != c.lessons %} &middot; {{ c.units }} {{ c.progress_label }}{% endif %}</p>
+          {% endif %}
+          <a class="btn block" href="{{ url_for('course', slug=c.slug) }}">{{ 'Continue learning' if prog else 'Start learning' }}</a>
+          {% if not user %}
+            <p class="muted" style="font-size:13.5px;margin:14px 0 0">No account needed to try. <a href="{{ url_for('auth.register') }}">Create one</a> to save progress on every device.</p>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+    {% set course_context = c %}
+    {% set lesson = "" %}
+    {% include "support/widget.html" %}
+  </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>@media (max-width:860px){.detail-grid{grid-template-columns:1fr!important}}</style>
+{% endblock %}

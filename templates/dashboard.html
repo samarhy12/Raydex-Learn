@@ -1,0 +1,96 @@
+{% extends "app_base.html" %}
+{% block title %}Dashboard | Raydex Learn{% endblock %}
+{% block app %}
+<div class="dash-head">
+  <div>
+    <h1>Welcome back, {{ user.name.split(' ')[0] }}.</h1>
+    <p class="page-sub">Here's where your learning stands.</p>
+  </div>
+  <a class="btn" href="{{ url_for('catalogue') }}">Browse courses</a>
+</div>
+
+{% if not user.verified %}
+<div class="panel" style="border-color:var(--hi);margin-bottom:20px">
+  <div><b>Verify your email.</b> Check <b>{{ user.email }}</b> for a verification link. If it hasn't arrived, you can request another:
+  <form method="post" action="{{ url_for('auth.verify_resend') }}" style="display:inline">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <button class="link" type="submit" style="font-size:14px">Resend link</button>
+  </form></div>
+</div>
+{% endif %}
+
+{% if not prog %}
+<div class="empty">
+  <h3>You haven't started learning yet.</h3>
+  <p>Pick a course and your first lesson takes a few minutes — code runs right in the page.</p>
+  <a class="btn" href="{{ url_for('catalogue') }}">Explore courses</a>
+</div>
+{% else %}
+
+<section>
+  <div class="recommend-panel">
+    <div class="recommend-panel__text">
+      <p class="cc-level">Recommended next step</p>
+      <h2>{{ latest.course.title if latest else 'Pick your next course' }}</h2>
+      <p>{% if latest %}You are {{ latest.done }} of {{ latest.course.units }} tracked items in {{ latest.course.title }}. Keep going and you’ll stay in momentum.{% else %}Choose a course and start with the first lesson — you can always build from there.{% endif %}</p>
+    </div>
+    {% if latest %}
+    <a class="btn" href="{{ url_for('course', slug=latest.course.slug) }}">Continue</a>
+    {% else %}
+    <a class="btn" href="{{ url_for('catalogue') }}">Browse courses</a>
+    {% endif %}
+  </div>
+  <h2>Continue learning</h2>
+  {% if latest %}
+  <div class="panel continue-card">
+    <img src="{{ url_for('static', filename=latest.course.thumb) }}" alt="" style="width:120px;height:75px;object-fit:cover;border-radius:10px;flex:none">
+    <div class="cc-info">
+      <h3>{{ latest.course.title }}</h3>
+      <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ latest.course.units }}" aria-valuenow="{{ latest.done }}" aria-label="{{ latest.course.title }} progress"><i style="width:{{ (100 * latest.done / latest.course.units) | round | int }}%"></i></div>
+      <p class="c-meta">{{ latest.done }} of {{ latest.course.units }} {{ latest.course.progress_label }}{% if latest.xp %} &middot; {{ latest.xp }} XP{% endif %}</p>
+    </div>
+    <a class="btn" href="{{ url_for('course', slug=latest.course.slug) }}">Continue</a>
+  </div>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Your progress</h2>
+  <div class="stat-row">
+    <div class="stat"><b>{{ total_done }}</b><span>items worked on</span></div>
+    <div class="stat"><b>{{ streak or '—' }}</b><span>day streak</span></div>
+    <div class="stat"><b>{{ total_xp }}</b><span>XP earned</span></div>
+    <div class="stat"><b>{{ prog|length }}</b><span>courses with progress</span></div>
+    <div class="stat"><b><a href="{{ url_for('progress.export') }}" class="link" style="font-size:14px">Export</a></b><span>download your data</span></div>
+  </div>
+</section>
+
+<section>
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <h2 style="margin:0">Your courses</h2>
+    <a class="link" href="{{ url_for('student.my_courses') }}">View all &amp; manage &rarr;</a>
+  </div>
+  <div class="courses-grid" style="margin-top:16px">
+    {% for slug, p in prog.items() %}
+    <article class="course-card">
+      <a class="course-thumb" href="{{ url_for('course_detail', slug=slug) }}" aria-label="{{ p.course.title }}">
+        <img src="{{ url_for('static', filename=p.course.thumb) }}" alt="" loading="lazy">
+      </a>
+      <div class="cc-body">
+        <h3><a href="{{ url_for('course_detail', slug=slug) }}">{{ p.course.title }}</a></h3>
+        {% if p.done >= p.course.units %}<p class="cc-level" style="color:var(--ok)">Completed</p>{% endif %}
+        <div class="cc-progress">
+          <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ p.course.units }}" aria-valuenow="{{ p.done }}" aria-label="{{ p.course.title }} progress"><i style="width:{{ p.pct }}%"></i></div>
+          <p class="c-meta">{{ p.done }} of {{ p.course.units }} {{ p.course.progress_label }}{% if p.xp %} &middot; {{ p.xp }} XP{% endif %}</p>
+        </div>
+        <div class="cc-foot">
+          <a class="btn" href="{{ url_for('course', slug=slug) }}">{{ 'Review' if p.done >= p.course.units else 'Continue' }}</a>
+          <a class="link" href="{{ url_for('course_detail', slug=slug) }}">Details</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

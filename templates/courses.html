@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Free Online Coding Courses: Python and Web Development | Raydex Learn{% endblock %}
+{% block description %}Browse free, beginner-friendly online coding courses in Python programming, machine learning, HTML, CSS and JavaScript. Learn with practical lessons and code that runs in your browser.{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Catalogue</p>
+      <h2>Courses</h2>
+      <p>Every course is free to try. Create an account to keep your progress across devices.</p>
+    </div>
+    <div class="catalogue-tools">
+      <input class="catalogue-search" type="search" placeholder="Search courses&hellip;" aria-label="Search courses" autocomplete="off">
+      <div class="course-filters" aria-label="Course filters">
+        <button class="filter-chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-chip" type="button" data-filter="python" aria-pressed="false">Python</button>
+        <button class="filter-chip" type="button" data-filter="web" aria-pressed="false">Web</button>
+      </div>
+    </div>
+    <div class="courses-grid">
+      {% for c in courses %}
+      {% set p = prog.get(c.slug) %}
+      <article class="course-card" data-category="{{ 'python' if 'python' in c.slug|lower else 'web' if 'web' in c.slug|lower else 'all' }}">
+        <div class="course-card__top">
+          <span class="status-tag {{ 'popular' if c.slug == 'python' else 'secondary' }}">{{ 'Most popular' if c.slug == 'python' else c.level }}</span>
+          <span class="status-tag secondary">{{ c.progress_label }}</span>
+        </div>
+        <a class="course-thumb" href="{{ url_for('course_detail', slug=c.slug) }}" aria-label="{{ c.title }}">
+          <img src="{{ url_for('static', filename=c.thumb) }}" alt="" loading="lazy">
+        </a>
+        <div class="cc-body">
+          <p class="cc-level">{{ c.level }}</p>
+          <h3><a href="{{ url_for('course_detail', slug=c.slug) }}">{{ c.title }}</a></h3>
+          <p class="cc-sum">{{ c.summary }}</p>
+          <div class="mini-tags">
+            {% for tag in c.topics[:3] %}<span>{{ tag }}</span>{% endfor %}
+          </div>
+          <ul class="cc-meta">
+            <li><b>{{ c.lessons }}</b> lessons</li>
+            <li>{{ c.progress_label }}</li>
+          </ul>
+          {% if p %}
+          <div class="cc-progress">
+            <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ c.units }}" aria-valuenow="{{ p.done }}" aria-label="{{ c.title }} progress"><i style="width:{{ (100 * p.done / c.units) | round | int }}%"></i></div>
+            <p class="c-meta">{{ p.done }} of {{ c.units }} {{ c.progress_label }}</p>
+          </div>
+          {% endif %}
+          <div class="cc-foot">
+            <a class="btn" href="{{ url_for('course', slug=c.slug) }}">{{ 'Continue' if p else 'Start course' }}</a>
+            <a class="link" href="{{ url_for('course_detail', slug=c.slug) }}">Details</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='catalogue.js') }}?v=1" defer></script>{% endblock %}

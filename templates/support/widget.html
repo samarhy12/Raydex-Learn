@@ -1,0 +1,51 @@
+<div class="support-widget">
+  <section class="support-panel" id="support-panel" aria-labelledby="support-title" hidden>
+    <header class="support-panel-head">
+      <div>
+        <p class="eyebrow">Raydex Learn support</p>
+        <h2 id="support-title">{{ "Question about " ~ course_context.title if course_context else "How can we help?" }}</h2>
+      </div>
+      <button class="support-close" type="button" aria-label="Close support">×</button>
+    </header>
+    {% if user %}
+      <p class="support-intro">Send us a message. You can follow the conversation from your account, and we’ll email you when we reply.</p>
+      <form class="support-form" method="post" action="{{ url_for('support.create_ticket', slug=course_context.slug) if course_context else url_for('support.create_ticket') }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        {% if not course_context %}
+        <label for="support-course">Course</label>
+        <select id="support-course" name="course">
+          <option value="">General question</option>
+          {% for item in all_courses %}
+          <option value="{{ item.slug }}">{{ item.title }}</option>
+          {% endfor %}
+        </select>
+        {% else %}
+        <p class="support-course-label">Course: <strong>{{ course_context.title }}</strong></p>
+        <input type="hidden" name="lesson" value="{{ lesson|default('')|e }}">
+        {% endif %}
+        <label for="support-subject">Subject</label>
+        <input id="support-subject" name="subject" maxlength="160" required>
+        {% if not course_context %}
+        <label for="support-lesson">Lesson or topic (optional)</label>
+        <input id="support-lesson" name="lesson" maxlength="160">
+        {% endif %}
+        <label for="support-body">Your message</label>
+        <textarea id="support-body" name="body" maxlength="5000" required></textarea>
+        <button class="btn block" type="submit">Send message</button>
+      </form>
+      <a class="support-ticket-link" href="{{ url_for('support.tickets') }}">View your support tickets</a>
+    {% else %}
+      <p class="support-intro">Sign in to ask a question and follow your support conversation.</p>
+      <a class="btn block" href="{{ url_for('auth.login', next=request.path + '#support-launcher') }}">Log in to contact us</a>
+    {% endif %}
+  </section>
+  <button class="support-launcher" id="support-launcher" type="button"
+          aria-expanded="false" aria-controls="support-panel" aria-label="Open support messages">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-6.5A7.5 7.5 0 1 1 20 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 11h8M8 14.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span>Support</span>
+  </button>
+</div>
+<script src="{{ url_for('static', filename='support-widget.js') }}?v=1" defer></script>

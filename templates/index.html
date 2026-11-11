@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Free Coding Courses: Python & Web Development | Raydex Learn{% endblock %}
+{% block description %}Learn Python programming and web development for free with hands-on lessons you can run in your browser. Build practical coding skills with Raydex Learn, part of Raydex Hub.{% endblock %}
+
+{% block social_image %}
+<meta property="og:image" content="{{ site_url }}{{ url_for('static', filename='img/ralph.jpg') }}">
+<meta property="og:image:alt" content="Agyarey Raphael Yeboah Wadie, creator of Raydex Learn">
+<meta name="twitter:image" content="{{ site_url }}{{ url_for('static', filename='img/ralph.jpg') }}">
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">{{ {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Raydex Learn",
+  "url": site_url,
+  "description": "Free, hands-on programming courses from Raydex Hub.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Raydex Hub",
+    "url": "https://raydexhub.com/"
+  }
+}|tojson }}</script>
+{% endblock %}
+
+{% block main %}
+<section class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <p class="eyebrow">Raydex Learn</p>
+      <h1>Learn to code by writing real code.</h1>
+      <p class="lead">{{ courses|length }} courses, {{ total_lessons }} short lessons. Read a little, change the example, run it in the page, and see what happens. Nothing to install.</p>
+      <div class="hero-cta">
+        <a class="btn" href="{{ url_for('catalogue') }}">Explore courses</a>
+        {% if user %}<a class="btn ghost" href="{{ url_for('student.dashboard') }}">My dashboard</a>{% else %}<a class="btn ghost" href="{{ url_for('auth.register') }}">Create account</a>{% endif %}
+      </div>
+      <div class="hero-trust" aria-label="Platform benefits">
+        <div class="trust-item">
+          <span class="trust-kicker">No setup</span>
+          <strong>Code right in the browser</strong>
+        </div>
+        <div class="trust-item">
+          <span class="trust-kicker">Track progress</span>
+          <strong>Keep your streak on every device</strong>
+        </div>
+        <div class="trust-item">
+          <span class="trust-kicker">Learn fast</span>
+          <strong>Short lessons, practical outcomes</strong>
+        </div>
+      </div>
+      <p class="hero-note">{% if user %}Welcome back, {{ user.name.split(' ')[0] }} — <a href="{{ url_for('student.dashboard') }}">go to your dashboard</a>.{% else %}You can try any course without an account. Sign up to keep your progress on every device.{% endif %}</p>
+      <div class="hero-stats">
+        <div><b>{{ courses|length }}</b><span>courses</span></div>
+        <div><b>{{ total_lessons }}</b><span>lessons</span></div>
+        <div><b>0</b><span>things to install</span></div>
+      </div>
+    </div>
+
+    <div class="hero-demo">
+      <div class="code-win" id="demo">
+        <div class="tabs" role="tablist" aria-label="Example language">
+          <button role="tab" id="tab-py" aria-selected="true" aria-controls="pane-py" class="tab" data-pane="py">fares.py</button>
+          <button role="tab" id="tab-js" aria-selected="false" aria-controls="pane-js" class="tab" data-pane="js" tabindex="-1">fares.js</button>
+        </div>
+        <div class="pane" id="pane-py" role="tabpanel" aria-labelledby="tab-py">
+<pre class="code"><code><span class="ln">1</span><span class="c"># Share a trotro fare</span>
+<span class="ln">2</span>fare = <span class="n">4.50</span>
+<span class="ln">3</span>passengers = <span class="n">3</span>
+<span class="ln">4</span>total = fare * passengers
+<span class="ln">5</span>
+<span class="ln">6</span><span class="k">print</span>(<span class="s">"Total fare: GH₵"</span>, total)</code></pre>
+        </div>
+        <div class="pane" id="pane-js" role="tabpanel" aria-labelledby="tab-js" hidden>
+<pre class="code"><code><span class="ln">1</span><span class="c">// Share a trotro fare</span>
+<span class="ln">2</span><span class="k">const</span> fare = <span class="n">4.5</span>;
+<span class="ln">3</span><span class="k">const</span> passengers = <span class="n">3</span>;
+<span class="ln">4</span><span class="k">const</span> total = fare * passengers;
+<span class="ln">5</span>
+<span class="ln">6</span>console.<span class="k">log</span>(<span class="s">"Total fare: GH₵"</span>, total);</code></pre>
+        </div>
+        <div class="out">
+          <button class="run" type="button" id="run">Run</button>
+          <div class="out-body" id="out" role="status" aria-live="polite"><span class="out-hint">Press Run to see the output.</span></div>
+        </div>
+      </div>
+      <p class="demo-cap">Every lesson has code boxes like this one. Change the code, run it, learn from the result.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="courses">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Courses</h2>
+      <p>Two courses to start. Each one is a sequence of short lessons that build on each other.</p>
+    </div>
+    <div class="course-filters" aria-label="Course filters">
+      <button class="filter-chip is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-chip" type="button" data-filter="python" aria-pressed="false">Python</button>
+      <button class="filter-chip" type="button" data-filter="web" aria-pressed="false">Web</button>
+    </div>
+    <div class="courses-grid">
+      {% for c in courses %}
+      {% set p = prog.get(c.slug) %}
+      <article class="course-card" data-category="{{ 'python' if 'python' in c.slug|lower else 'web' if 'web' in c.slug|lower else 'all' }}">
+        <div class="course-card__top">
+          <span class="status-tag {{ 'popular' if c.slug == 'python' else 'secondary' }}">{{ 'Most popular' if c.slug == 'python' else c.level }}</span>
+          <span class="status-tag secondary">{{ c.progress_label }}</span>
+        </div>
+        <a class="course-thumb" href="{{ url_for('course_detail', slug=c.slug) }}" aria-label="{{ c.title }}">
+          <img src="{{ url_for('static', filename=c.thumb) }}" alt="" loading="lazy">
+        </a>
+        <div class="cc-body">
+          <p class="cc-level">{{ c.level }}</p>
+          <h3><a href="{{ url_for('course_detail', slug=c.slug) }}">{{ c.title }}</a></h3>
+          <p class="cc-sum">{{ c.summary }}</p>
+          <div class="mini-tags">
+            {% for tag in c.topics[:3] %}<span>{{ tag }}</span>{% endfor %}
+          </div>
+          <ul class="cc-meta">
+            <li><b>{{ c.lessons }}</b> lessons</li>
+            <li>{{ c.progress_label }}</li>
+          </ul>
+          {% if p %}
+          <div class="cc-progress">
+            <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ c.units }}" aria-valuenow="{{ p.done }}" aria-label="{{ c.title }} progress"><i style="width:{{ (100 * p.done / c.units) | round | int }}%"></i></div>
+            <p class="c-meta">{{ p.done }} of {{ c.units }} {{ c.progress_label }}{% if p.xp %} &middot; {{ p.xp }} XP{% endif %}</p>
+          </div>
+          {% endif %}
+          <div class="cc-foot">
+            <a class="btn" href="{{ url_for('course', slug=c.slug) }}">{{ 'Continue' if p else 'Start course' }}</a>
+            <a class="link" href="{{ url_for('course_detail', slug=c.slug) }}">Details</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p style="margin-top:28px"><a class="btn ghost" href="{{ url_for('catalogue') }}">View all courses</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>How a lesson works</h2>
+      <p>The same four steps every time, so you always know what to do next.</p>
+    </div>
+    <ol class="steps">
+      <li><span class="num">1</span><h3>Discover a course</h3><p>Browse the catalogue and pick a course that matches what you want to learn.</p></li>
+      <li><span class="num">2</span><h3>Create an account</h3><p>Sign up once. Your progress then saves to your account on every device.</p></li>
+      <li><span class="num">3</span><h3>Access the course</h3><p>Open a lesson and read the short explanation. No setup, no installs.</p></li>
+      <li><span class="num">4</span><h3>Study and track</h3><p>Run the code, answer the checks, and watch your progress add up.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Why Raydex Learn</h2>
+      <p>What the platform actually does — no inflated claims.</p>
+    </div>
+    <ul class="check-list" style="max-width:640px">
+      <li>Code that runs in the page<span>Every code box executes real Python or JavaScript in your browser. No installs, no setup.</span></li>
+      <li>Progress that follows you<span>Sign in on any device and pick up where you left off. Progress syncs automatically.</span></li>
+      <li>Short, structured lessons<span>Each lesson fits in one sitting and builds on the ones before it.</span></li>
+      <li>Free to start<span>You can try any course without an account. Create one when you want to keep your progress.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap eco">
+    <div>
+      <p class="eyebrow">Part of Raydex Hub</p>
+      <h2>An independent learning product</h2>
+      <p style="color:var(--mute);margin:14px 0 0;max-width:34em">Raydex Learn is the education arm of the Raydex Hub ecosystem. It exists to make practical, structured learning accessible — courses built by people who care about the craft, not a content mill.</p>
+      <p style="margin-top:20px"><a class="btn ghost" href="{{ url_for('about') }}">More about Raydex Learn</a></p>
+    </div>
+    <div class="eco-card">
+      <div class="hub">
+        <img class="logo" src="{{ url_for('static', filename='img/raydex-hub-icon.png') }}" alt="" width="34" height="34">
+        <h3>Raydex Hub</h3>
+      </div>
+      <p>The parent ecosystem behind Raydex Learn. Raydex Learn operates as its own product with its own courses, accounts and progress tracking.</p>
+      <a class="link" href="https://raydexhub.com" rel="noopener">Visit raydexhub.com &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap founder-preview">
+    <img src="{{ url_for('static', filename='img/ralph.jpg') }}"
+         alt="Agyarey Raphael Yeboah Wadie, software developer and creator of Raydex Learn"
+         width="1280" height="1280" loading="lazy">
+    <div>
+      <p class="eyebrow">The builder behind Raydex Learn</p>
+      <h2>Meet Raphael</h2>
+      <p>Agyarey Raphael Yeboah Wadie is a software developer based in Accra, Ghana, and the creator of Raydex Hub. He builds practical digital tools and believes the best way to learn programming is to write code, run it, and understand what happens.</p>
+      <a class="btn ghost" href="{{ url_for('about') }}#creator">Read Raphael’s story</a>
+    </div>
+  </div>
+</section>
+{% set course_context = none %}
+{% set lesson = "" %}
+{% include "support/widget.html" %}
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='home.js') }}?v=2" defer></script>{% endblock %}

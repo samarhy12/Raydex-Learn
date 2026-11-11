@@ -1,0 +1,20 @@
+{% extends "app_base.html" %}
+{% block title %}Profile | Raydex Learn{% endblock %}
+{% block app %}
+<h1>Profile</h1>
+<p class="page-sub">Your account details.</p>
+
+<div class="panel" style="max-width:520px">
+  <form method="post" class="form">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label for="email">Email</label>
+    <input id="email" type="email" value="{{ user.email }}" disabled>
+    <small>Email can't be changed. Contact support if you need a different address.</small>
+    <label for="name">Name</label>
+    <input id="name" type="text" name="name" value="{{ user.name }}" maxlength="60" required>
+    <label>Member since</label>
+    <input type="text" value="{{ member_since }}" disabled>
+    <button class="btn" type="submit">Save changes</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Support tickets | Admin | Raydex Learn{% endblock %}
+{% block main %}
+<section class="wrap admin-support">
+  <p><a href="{{ url_for('admin') }}">← Admin</a></p>
+  <h1>Support tickets</h1>
+  {% if not support_email %}
+    <p class="flash err">SUPPORT_EMAIL is not configured. New-ticket notifications cannot be delivered.</p>
+  {% endif %}
+  {% if rows %}
+  <div class="ticket-list">
+    {% for ticket, learner in rows %}
+    <a class="ticket-row" href="{{ url_for('support.admin_ticket', ticket_id=ticket.id) }}">
+      <span class="ticket-main">
+        <strong>#{{ ticket.id }} · {{ ticket.subject }}</strong>
+        <small>{{ learner.name }} &lt;{{ learner.email }}&gt; · {{ ticket.course_title }} · Updated {{ ticket.updated_label }}</small>
+        {% if not ticket.admin_notified %}<small class="ticket-pending">Admin notification pending</small>{% endif %}
+      </span>
+      <span class="ticket-status status-{{ ticket.status }}">{{ statuses[ticket.status] }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="panel"><h2>All clear</h2><p class="panel-sub">No tickets have been submitted yet.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

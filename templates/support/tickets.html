@@ -1,0 +1,24 @@
+{% extends "app_base.html" %}
+{% block title %}Support tickets | Raydex Learn{% endblock %}
+{% block app %}
+<div class="dash-head">
+  <div><p class="eyebrow">Help</p><h1>Your support tickets</h1></div>
+  <a class="btn ghost" href="{{ url_for('catalogue') }}">Browse courses</a>
+</div>
+<p class="muted">Questions and replies about your courses, all in one place.</p>
+{% if tickets %}
+  <div class="ticket-list">
+    {% for ticket in tickets %}
+    <a class="ticket-row" href="{{ url_for('support.ticket', ticket_id=ticket.id) }}">
+      <span class="ticket-main">
+        <strong>{{ ticket.subject }}</strong>
+        <small>{{ ticket.course_title }} · Updated {{ ticket.updated_label }}</small>
+      </span>
+      <span class="ticket-status status-{{ ticket.status }}">{{ statuses[ticket.status] }}</span>
+    </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="panel"><h2>No support tickets yet</h2><p class="panel-sub">Open any course page and use “Need help with this course?” to ask a question.</p></div>
+{% endif %}
+{% endblock %}

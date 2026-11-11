@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Terms of use | Raydex Learn{% endblock %}
+{% block description %}Terms governing use of the Raydex Learn platform.{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of use</h1>
+      <p class="muted">Last updated: November 2026</p>
+    </div>
+    <div class="prose">
+      <p>By using Raydex Learn you agree to these terms. Raydex Learn is operated as part of the Raydex Hub ecosystem.</p>
+
+      <h2>Your account</h2>
+      <ul>
+        <li>You must provide a valid email address and keep your password confidential.</li>
+        <li>You are responsible for activity under your account.</li>
+        <li>You may not share accounts or attempt to access other users' data.</li>
+      </ul>
+
+      <h2>Acceptable use</h2>
+      <ul>
+        <li>Use the platform for learning — that's what it's for.</li>
+        <li>Don't abuse the service: no scraping, automated bulk access, or attempts to disrupt the platform.</li>
+        <li>Code you write in course exercises runs in your own browser; you are responsible for what you do with it.</li>
+      </ul>
+
+      <h2>Content</h2>
+      <p>Course content is provided for personal learning. You may not republish or sell course materials without permission. The Raydex Learn name and branding are trademarks of the Raydex Hub ecosystem.</p>
+
+      <h2>Availability</h2>
+      <p>The platform is provided as-is. We may modify, suspend or discontinue features with reasonable notice where practical. Your progress data can be exported at any time.</p>
+
+      <h2>Liability</h2>
+      <p>To the extent permitted by law, Raydex Learn is not liable for indirect or consequential damages arising from use of the platform.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about these terms? Reach us via the <a href="{{ url_for('contact') }}">contact page</a>.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

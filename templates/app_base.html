@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="shell">
+  <button class="side-toggle" type="button" aria-expanded="false" aria-controls="side-nav">Menu</button>
+  <aside class="side" id="side-nav">
+    <nav aria-label="Student">
+      <a href="{{ url_for('student.dashboard') }}" {% if request.endpoint == 'student.dashboard' %}aria-current="page"{% endif %}>Overview</a>
+      <a href="{{ url_for('student.my_courses') }}" {% if request.endpoint == 'student.my_courses' %}aria-current="page"{% endif %}>My courses</a>
+      <a href="{{ url_for('student.progress_page') }}" {% if request.endpoint == 'student.progress_page' %}aria-current="page"{% endif %}>Progress</a>
+      <a href="{{ url_for('support.tickets') }}" {% if request.path.startswith('/support') %}aria-current="page"{% endif %}>Support</a>
+      <p class="side-label">Account</p>
+      <a href="{{ url_for('student.profile') }}" {% if request.endpoint == 'student.profile' %}aria-current="page"{% endif %}>Profile</a>
+      <a href="{{ url_for('student.settings') }}" {% if request.endpoint == 'student.settings' %}aria-current="page"{% endif %}>Settings</a>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button class="nav-out" type="submit">Log out</button>
+      </form>
+    </nav>
+  </aside>
+  <div class="app">
+    {% block app %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

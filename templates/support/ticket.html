@@ -1,0 +1,77 @@
+{% extends "app_base.html" %}
+{% block title %}Ticket #{{ ticket.id }} | Raydex Learn{% endblock %}
+{% block app %}
+<section class="ticket-page">
+  <p><a href="{{ url_for('support.admin_tickets' if is_admin else 'support.tickets') }}">← {{ "All support tickets" if is_admin else "Your support tickets" }}</a></p>
+  <div class="ticket-heading">
+    <div>
+      <p class="eyebrow">{{ ticket.course_title }}{% if ticket.lesson %} · {{ ticket.lesson }}{% endif %}</p>
+      <h1>#{{ ticket.id }} · {{ ticket.subject }}</h1>
+      <p class="muted">Opened {{ ticket.created_label }}</p>
+    </div>
+    <span class="ticket-status status-{{ ticket.status }}">{{ statuses[ticket.status] }}</span>
+  </div>
+  {% if is_admin %}
+    <p class="muted">Learner: {{ user.name }} &lt;{{ user.email }}&gt;</p>
+    <div class="ticket-admin-actions">
+      <form method="post" action="{{ url_for('support.admin_status', ticket_id=ticket.id) }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <label for="ticket-status">Status</label>
+        <select id="ticket-status" name="status">
+          {% for value, label in statuses.items() %}
+          <option value="{{ value }}" {% if ticket.status == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <button class="btn sm" type="submit">Update status</button>
+      </form>
+      {% if not ticket.admin_notified %}
+      <form method="post" action="{{ url_for('support.retry_ticket_notification', ticket_id=ticket.id) }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button class="btn ghost sm" type="submit">Retry new-ticket email</button>
+      </form>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="ticket-thread">
+    {% for message in messages %}
+    <article class="ticket-message {{ message.sender_type }}">
+      <header><strong>{{ message.sender_name }}</strong><span>{{ "Raydex Learn support" if message.sender_type == "admin" else "Learner" }}</span><time>{{ message.created_label }}</time></header>
+      <div class="ticket-message-body">{{ message.body }}</div>
+      {% if is_admin and message.notification_pending %}
+      <form method="post" action="{{ url_for('support.retry_message_notification', ticket_id=ticket.id, message_id=message.id) }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button class="link" type="submit">Email notification failed — retry</button>
+      </form>
+      {% elif is_admin and not message.notification_sent and message.sender_type == "admin" %}
+      <p class="muted ticket-email-pending">Learner email notification is pending.</p>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+
+  {% if is_admin %}
+    {% if ticket.status != "closed" %}
+    <form class="ticket-reply" method="post" action="{{ url_for('support.admin_reply', ticket_id=ticket.id) }}">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      <label for="ticket-reply">Reply to learner</label>
+      <textarea id="ticket-reply" name="body" maxlength="5000" required></textarea>
+      <button class="btn" type="submit">Send reply</button>
+    </form>
+    {% endif %}
+    <p><a href="{{ url_for('support.admin_tickets') }}">← All support tickets</a></p>
+  {% elif ticket.status == "closed" %}
+    <form method="post" action="{{ url_for('support.reopen_ticket', ticket_id=ticket.id) }}">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      <button class="btn ghost" type="submit">Reopen ticket</button>
+    </form>
+  {% else %}
+    <form class="ticket-reply" method="post" action="{{ url_for('support.learner_reply', ticket_id=ticket.id) }}">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      <label for="ticket-reply">Add a reply</label>
+      <textarea id="ticket-reply" name="body" maxlength="5000" required></textarea>
+      <button class="btn" type="submit">Send reply</button>
+    </form>
+  {% endif %}
+</section>
+{% endblock %}

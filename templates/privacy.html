@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Privacy policy | Raydex Learn{% endblock %}
+{% block description %}How Raydex Learn collects, uses and protects your data.{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy policy</h1>
+      <p class="muted">Last updated: November 2026</p>
+    </div>
+    <div class="prose">
+      <p>Raydex Learn ("we", "the platform") is an education product operated as part of the Raydex Hub ecosystem. This policy explains what data we collect and why.</p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Account data</strong> — your name and email address, plus a hashed password if you set one. If you use Google sign-in, we also store Google's stable account identifier so you can sign in again.</li>
+        <li><strong>Learning progress</strong> — the state each course saves (lessons completed, XP, activity) so it can sync across your devices.</li>
+        <li><strong>Support conversations</strong> — course, optional lesson/topic, subject and messages you submit, linked to your account so you can follow the conversation. We email notifications to the configured support inbox and your account email when replies are sent.</li>
+        <li><strong>Technical data</strong> — standard server logs (IP address, browser, pages requested) used for security and debugging.</li>
+      </ul>
+
+      <h2>What we don't collect</h2>
+      <ul>
+        <li>We don't sell your data or share it with advertisers.</li>
+        <li>We don't require payment details — the platform is currently free.</li>
+        <li>Courses run code in your browser; code you write stays on your device except for the progress summary we sync.</li>
+      </ul>
+
+      <h2>Cookies</h2>
+      <p>We use a single session cookie to keep you logged in. Courses also use your browser's local storage to save progress on that device — this stays on your device and is only uploaded to your account when you are logged in.</p>
+
+      <h2>Third parties</h2>
+      <p>If you choose Google sign-in, Google shares your account's name, email address and stable account identifier with us to authenticate you. We do not receive your Google password. Support notifications are sent through the configured email provider and include the message and a link to the ticket. Pages also load fonts from Google Fonts, and course pages may load code libraries (such as Skulpt for Python) from CDNs when needed to run code; these providers see standard request data (IP address, user agent).</p>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>You can learn without an account — progress then stays only in that browser.</li>
+        <li>You can export all your saved progress as JSON from the footer or your dashboard.</li>
+        <li>You can reset any course's progress from the My courses page.</li>
+        <li>Deleting your account also deletes its support tickets and conversation messages.</li>
+        <li>To delete your account and all associated data, contact us via the <a href="{{ url_for('contact') }}">contact page</a>.</li>
+      </ul>
+
+      <h2>Changes</h2>
+      <p>If this policy changes, the updated version will be posted on this page with a new date.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

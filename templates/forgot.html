@@ -1,0 +1,13 @@
+{% extends "auth_base.html" %}
+{% block title %}Reset password | Raydex Learn{% endblock %}
+{% block auth_form %}
+<h1>Reset your password</h1>
+<p class="sub">Enter your account email and we will send a reset link.</p>
+<form method="post" class="form">
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  <label for="email">Email</label>
+  <input id="email" type="email" name="email" autocomplete="email" required autofocus>
+  <button class="btn block" type="submit">Send reset link</button>
+</form>
+<p class="auth-alt"><a href="{{ url_for('auth.login') }}">Back to log in</a></p>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} | Raydex Learn{% endblock %}
+{% block main %}
+<section class="wrap msg">
+  <h1>{{ title }}</h1>
+  <p>{{ text }}</p>
+  <p><a class="btn" href="{{ url_for('index') }}">Back to courses</a></p>
+</section>
+{% endblock %}

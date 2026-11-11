@@ -1,0 +1,37 @@
+.support-widget{position:fixed;right:22px;bottom:22px;z-index:2147482000;font:15px/1.5 Inter,system-ui,sans-serif;color:#202721}
+.support-launcher{display:flex;align-items:center;gap:10px;padding:12px 18px;border:0;border-radius:999px;
+  background:#315c50;color:#fff;box-shadow:0 6px 22px rgba(20,35,25,.25);font:700 15px/1 Inter,system-ui,sans-serif;
+  cursor:pointer;transition:transform .16s ease,background .16s ease,box-shadow .16s ease}
+.support-launcher:hover{background:#26473d;transform:translateY(-2px);box-shadow:0 9px 26px rgba(20,35,25,.3)}
+.support-launcher:focus-visible,.support-panel button:focus-visible,.support-panel a:focus-visible,
+.support-panel input:focus-visible,.support-panel select:focus-visible,.support-panel textarea:focus-visible{
+  outline:3px solid #d9a441;outline-offset:3px}
+.support-launcher svg{width:22px;height:22px;flex:none}
+.support-panel{position:fixed;right:22px;bottom:86px;width:min(390px,calc(100vw - 28px));max-height:min(690px,calc(100dvh - 112px));
+  overflow:auto;padding:21px;background:#fff;border:1px solid #dfe4df;border-radius:16px;
+  box-shadow:0 14px 48px rgba(20,35,25,.24);color:#202721}
+.support-panel[hidden]{display:none}
+.support-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:0 0 15px;border-bottom:1px solid #e8ece8}
+.support-panel-head .eyebrow{margin:0 0 7px;color:#315c50;font:700 11px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.support-panel-head h2{margin:0;font:800 21px/1.25 Manrope,Inter,system-ui,sans-serif}
+.support-close{width:34px;height:34px;flex:none;border:0;border-radius:50%;background:#f1f3f1;color:#424d46;
+  font:400 25px/1 system-ui,sans-serif;cursor:pointer}
+.support-intro{margin:14px 0;color:#58635c;font-size:13px;line-height:1.55}
+.support-form{display:grid;gap:7px}
+.support-form label{margin-top:7px;font-size:13px;font-weight:700}
+.support-form input,.support-form select,.support-form textarea{width:100%;padding:10px 11px;border:1px solid #cbd4cc;
+  border-radius:8px;background:#fff;color:#202721;font:14px/1.45 Inter,system-ui,sans-serif}
+.support-form textarea{min-height:110px;resize:vertical}
+.support-form .btn,.support-panel .btn{display:flex;align-items:center;justify-content:center;min-height:42px;width:100%;
+  margin-top:8px;padding:11px 16px;border:0;border-radius:8px;background:#315c50;color:#fff;text-decoration:none;
+  font:700 14px/1.2 Inter,system-ui,sans-serif;cursor:pointer}
+.support-form .btn:hover,.support-panel .btn:hover{background:#26473d}
+.support-course-label{margin:10px 0 0;color:#58635c;font-size:13px}
+.support-course-label strong{color:#202721}
+.support-ticket-link{display:block;margin:14px 0 0;text-align:center;color:#315c50;font-size:13px;font-weight:700}
+@media(max-width:600px){
+  .support-widget{right:14px;bottom:14px}
+  .support-launcher{padding:12px 15px}
+  .support-panel{right:14px;bottom:74px;padding:18px}
+}
+@media(prefers-reduced-motion:reduce){.support-launcher{transition:none}.support-launcher:hover{transform:none}}

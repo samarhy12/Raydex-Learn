@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Certificate — {{ c.title }} | Raydex Learn{% endblock %}
+{% block main %}
+<section class="section">
+  <div class="wrap" style="max-width:820px">
+    <div class="cert">
+      <p class="cert-brand">Raydex Learn</p>
+      <h1>Certificate of Completion</h1>
+      <p class="cert-to">This certifies that</p>
+      <p class="cert-name">{{ cert_name }}</p>
+      <p class="cert-to">has completed {% if c.units == c.lessons %}all {{ c.lessons }} lessons{% else %}all {{ c.units }} tracked items (lessons, capstones and projects){% endif %} of</p>
+      <p class="cert-course">{{ c.title }}</p>
+      <p class="cert-meta">{{ done }} {{ c.progress_label }} &middot; {{ xp }} XP &middot; {{ now_year }}</p>
+      <div class="cert-foot">
+        <span>{% if verify_public %}Verified authentic by Raydex Learn{% else %}Part of the Raydex Hub ecosystem{% endif %}</span>
+        <button class="btn sm" type="button" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+    {% if verify_url %}
+    <p style="text-align:center;margin-top:16px;font-size:13.5px" class="muted">
+      Anyone can verify this certificate is genuine:
+      <a class="link" href="{{ verify_url }}" style="word-break:break-all">{{ verify_url }}</a>
+    </p>
+    {% elif verify_public %}
+    <p style="text-align:center;margin-top:20px">
+      <a class="link" href="{{ url_for('index') }}">&larr; Raydex Learn</a>
+    </p>
+    {% else %}
+    <p style="text-align:center;margin-top:20px">
+      <a class="link" href="{{ url_for('student.my_courses') }}">&larr; Back to my courses</a>
+    </p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+{% block head %}
+<style>
+.cert{border:2px solid var(--accent);border-radius:4px;padding:56px 40px;text-align:center;background:var(--card);position:relative}
+.cert::before{content:"";position:absolute;inset:10px;border:1px solid var(--line);border-radius:2px;pointer-events:none}
+.cert-brand{font:800 13px var(--fd);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0}
+.cert h1{font-size:clamp(24px,4vw,36px);margin:18px 0 8px}
+.cert-to{color:var(--mute);margin:0}
+.cert-name{font:800 clamp(22px,4vw,32px) var(--fd);margin:6px 0;color:var(--accent);border-bottom:2px solid var(--accent);display:inline-block;padding:0 24px 6px}
+.cert-course{font:700 clamp(17px,2.6vw,22px) var(--fd);margin:14px 0 4px}
+.cert-meta{color:var(--mute);font-size:14px;margin:10px 0 26px}
+.cert-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--mute)}
+@media print{.top,.foot,.skip,.cert-foot button{display:none!important}.cert{border-color:#333}.cert::before{border-color:#ccc}}
+</style>
+{% endblock %}

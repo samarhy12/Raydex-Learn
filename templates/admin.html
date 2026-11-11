@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin | Raydex Learn{% endblock %}
+{% block main %}
+<section class="wrap msg">
+  <h1>Admin</h1>
+  <p>{{ total_users }} account{{ "s" if total_users != 1 }} &middot; {{ verified }} verified.</p>
+  <p><a class="btn sm" href="{{ url_for('support.admin_tickets') }}">Support tickets ({{ active_tickets }} active)</a></p>
+
+  <h2>Per course</h2>
+  <table class="admin-table">
+    <thead><tr><th>Course</th><th>Learners</th><th>Total XP</th></tr></thead>
+    <tbody>
+      {% for slug, c in courses.items() %}
+      <tr>
+        <td>{{ c.title }}</td>
+        <td>{{ course_stats.get(slug, {}).get("learners", 0) }}</td>
+        <td>{{ course_stats.get(slug, {}).get("xp", 0) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Users</h2>
+  <table class="admin-table">
+    <thead><tr><th>Email</th><th>Name</th><th>Joined</th><th>Verified</th><th>Status</th><th>Courses</th><th>XP</th><th>Lessons</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for r in users %}
+      <tr>
+        <td>{{ r.user.email }}</td>
+        <td>{{ r.user.name }}</td>
+        <td>{{ r.user.created_at }}</td>
+        <td>{{ "yes" if r.user.verified else "no" }}</td>
+        <td>{{ "disabled" if r.user.disabled else "active" }}</td>
+        <td>{{ r.courses }}</td>
+        <td>{{ r.xp }}</td>
+        <td>{{ r.done }}</td>
+        <td style="white-space:nowrap">
+          <form method="post" action="{{ url_for('admin_user_verify', user_id=r.user.id) }}" style="display:inline">
+            <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+            <button class="btn sm ghost" type="submit">{{ "Unverify" if r.user.verified else "Verify" }}</button>
+          </form>
+          <form method="post" action="{{ url_for('admin_user_reset_link', user_id=r.user.id) }}" style="display:inline">
+            <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+            <button class="btn sm ghost" type="submit">Send reset link</button>
+          </form>
+          {% if not (user and r.user.id == user.id) %}
+          <form method="post" action="{{ url_for('admin_user_disable', user_id=r.user.id) }}" style="display:inline">
+            <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+            <button class="btn sm ghost" type="submit">{{ "Enable" if r.user.disabled else "Disable" }}</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

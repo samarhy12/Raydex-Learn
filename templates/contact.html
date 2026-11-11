@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Contact | Raydex Learn{% endblock %}
+{% block description %}Get in touch with the Raydex Learn team — questions, feedback and course ideas welcome.{% endblock %}
+
+{% block main %}
+<section class="section">
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Contact</p>
+      <h1>Contact &amp; support</h1>
+    </div>
+    <div class="prose">
+      <p>Raydex Learn is part of the Raydex Hub ecosystem. The fastest way to reach the team is through Raydex Hub:</p>
+      <p><a class="btn" href="https://raydexhub.com" rel="noopener">Visit raydexhub.com</a></p>
+
+      <h2>Common questions</h2>
+      <h2 style="font-size:18px;margin-top:20px">Do I need an account to learn?</h2>
+      <p>No. You can open any course and start a lesson without signing up. Create a free account when you want your progress saved across devices.</p>
+      <h2 style="font-size:18px;margin-top:20px">I forgot my password.</h2>
+      <p>Use the <a href="{{ url_for('auth.forgot') }}">password reset</a> page. We'll email you a link to choose a new one.</p>
+      <h2 style="font-size:18px;margin-top:20px">My progress didn't sync.</h2>
+      <p>Progress syncs a couple of seconds after you make changes, and again when you close the tab. If you're offline it queues and syncs when you're back online — the status pill in the corner of the course shows what's happening.</p>
+      <h2 style="font-size:18px;margin-top:20px">Can I reset a course?</h2>
+      <p>Yes. On the <a href="{{ url_for('student.my_courses') if user else url_for('auth.login') }}">My courses</a> page, each course with progress has a reset option that clears it on all your devices.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

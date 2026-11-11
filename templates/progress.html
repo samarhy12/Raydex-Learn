@@ -1,0 +1,50 @@
+{% extends "app_base.html" %}
+{% block title %}Progress | Raydex Learn{% endblock %}
+{% block app %}
+<h1>Learning progress</h1>
+<p class="page-sub">Your real numbers, straight from your account.</p>
+
+<div class="stat-row">
+  <div class="stat"><b>{{ total_done }}</b><span>items worked on</span></div>
+  <div class="stat"><b>{{ total_xp }}</b><span>XP earned</span></div>
+  <div class="stat"><b>{{ prog|length }}</b><span>courses in progress</span></div>
+  <div class="stat"><b>{{ total_lessons }}</b><span>lessons available</span></div>
+</div>
+
+{% for slug, p in prog.items() %}
+<div class="panel" style="margin-bottom:14px">
+  <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px">
+      <h3 style="font-size:17px"><a href="{{ url_for('course_detail', slug=slug) }}" style="color:var(--ink);text-decoration:none">{{ p.course.title }}</a></h3>
+      <p class="muted" style="font-size:13.5px;margin:4px 0 10px">{{ p.course.progress_label }}</p>
+      <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="{{ p.course.units }}" aria-valuenow="{{ p.done }}" aria-label="{{ p.course.title }} progress"><i style="width:{{ p.pct }}%"></i></div>
+    </div>
+    <div style="text-align:right;min-width:110px">
+      <b style="font:800 24px/1 var(--fd);display:block">{{ p.pct }}%</b>
+      <span class="muted" style="font-size:13px">{{ p.done }}/{{ p.course.units }}</span>
+      {% if p.done >= p.course.units %}<a class="link" href="{{ url_for('student.certificate', slug=slug) }}" style="font-size:13px">Certificate</a>{% endif %}
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="empty">
+  <h3>No progress yet</h3>
+  <p>Finish a lesson and it will show up here.</p>
+  <a class="btn" href="{{ url_for('catalogue') }}">Browse courses</a>
+</div>
+{% endfor %}
+
+<div class="panel" style="margin-bottom:14px">
+  <p style="margin:0 0 10px"><b>Take your progress with you</b></p>
+  <p class="muted" style="font-size:13.5px;margin:0 0 12px">
+    <a class="link" href="{{ url_for('progress.export') }}">Download a copy (JSON)</a>
+    — or restore one on this or another account.
+  </p>
+  <form method="post" action="{{ url_for('progress.import_progress') }}" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <input type="file" name="file" accept="application/json,.json" required
+           style="font-size:13.5px;max-width:280px">
+    <button class="btn" type="submit" style="padding:9px 18px;font-size:14px">Import</button>
+  </form>
+</div>
+{% endblock %}
